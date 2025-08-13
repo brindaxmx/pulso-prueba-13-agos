@@ -1,0 +1,104 @@
+{
+  "model_configs": {
+    "kitchen_hygiene_vision": {
+      "architecture": "resnet50_attention",
+      "input_size": [224, 224],
+      "num_classes": 4,
+      "batch_size": 32,
+      "learning_rate": 0.0001,
+      "epochs": 50,
+      "optimizer": "adam",
+      "scheduler": "cosine_annealing",
+      "augmentation": {
+        "rotation": 15,
+        "brightness": 0.2,
+        "contrast": 0.2,
+        "horizontal_flip": true,
+        "vertical_flip": false
+      },
+      "class_weights": [1.0, 1.2, 1.5, 2.0],
+      "early_stopping": {
+        "patience": 10,
+        "min_delta": 0.001
+      }
+    },
+    "temperature_control": {
+      "algorithm": "gradient_boosting",
+      "n_estimators": 200,
+      "max_depth": 8,
+      "learning_rate": 0.1,
+      "subsample": 0.8,
+      "feature_selection": "recursive",
+      "cross_validation": 5,
+      "anomaly_detection": {
+        "method": "isolation_forest",
+        "contamination": 0.05,
+        "n_estimators": 100
+      }
+    },
+    "service_audio": {
+      "whisper_model": "large-v3",
+      "language": "es",
+      "sentiment_model": "nlptown/bert-base-multilingual-uncased-sentiment",
+      "feature_extraction": {
+        "mfcc_coefficients": 13,
+        "spectral_features": true,
+        "prosodic_features": true
+      },
+      "classification": {
+        "num_classes": 4,
+        "threshold_tuning": true
+      }
+    },
+    "hotel_room_standards": {
+      "architecture": "efficientnet_b4",
+      "multi_area_attention": true,
+      "areas": ["bedroom", "bathroom", "amenities", "maintenance"],
+      "scoring_method": "hierarchical",
+      "quality_standards": {
+        "luxury": 0.95,
+        "premium": 0.85,
+        "standard": 0.75,
+        "budget": 0.65
+      }
+    }
+  },
+  "training_settings": {
+    "data_split": {
+      "train": 0.7,
+      "validation": 0.2,
+      "test": 0.1
+    },
+    "cross_validation": {
+      "folds": 5,
+      "stratified": true
+    },
+    "hardware": {
+      "device": "auto",
+      "mixed_precision": true,
+      "gradient_accumulation": 2
+    },
+    "logging": {
+      "wandb_project": "pulso_horeca_models",
+      "log_frequency": 10,
+      "save_checkpoints": true
+    }
+  },
+  "evaluation_metrics": {
+    "vision_models": ["accuracy", "precision", "recall", "f1_score", "auc", "confusion_matrix"],
+    "regression_models": ["mae", "rmse", "r2_score", "mape"],
+    "audio_models": ["transcription_wer", "sentiment_accuracy", "service_score_correlation"]
+  },
+  "deployment": {
+    "model_versioning": true,
+    "a_b_testing": {
+      "enabled": true,
+      "traffic_split": 0.1
+    },
+    "monitoring": {
+      "drift_detection": true,
+      "performance_alerts": true,
+      "retraining_threshold": 0.05
+    }
+  }
+}
