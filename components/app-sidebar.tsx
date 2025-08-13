@@ -33,6 +33,8 @@ import {
   UtensilsCrossed,
   Shield,
   Award,
+  Brain,
+  BookOpen,
 } from "lucide-react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
@@ -48,6 +50,11 @@ const menuItems = [
     title: "HORECA Dashboard",
     url: "/dashboard/horeca",
     icon: UtensilsCrossed,
+  },
+  {
+    title: "Modelos IA",
+    url: "/dashboard/models",
+    icon: Brain,
   },
   {
     title: "Automatización",
@@ -107,6 +114,11 @@ const menuItems = [
 ]
 
 const adminItems = [
+  {
+    title: "System Overview",
+    url: "/dashboard/system-overview",
+    icon: BookOpen,
+  },
   {
     title: "Configuración",
     url: "/dashboard/configuracion",
